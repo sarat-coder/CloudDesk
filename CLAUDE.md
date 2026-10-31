@@ -413,8 +413,10 @@ temp SQLite, `CHECKPOINT_DB_PATH=:memory:`). Auth fixtures: `agent_headers`, `ad
 | grounding rate (steps present in reply) | ≥ 0.90 |
 
 Adding an eval case: append to `eval_cases.json` with a valid `expected_category`.
-pytest: `asyncio_mode = "auto"`, `loop_scope = "session"` in `pyproject.toml`. Do not mix in
-`@pytest.mark.asyncio` with a different scope.
+pytest-asyncio in `pyproject.toml` uses `asyncio_mode = "auto"`,
+`asyncio_default_test_loop_scope = "session"`, and
+`asyncio_default_fixture_loop_scope = "session"`. If an explicit
+`@pytest.mark.asyncio` is used, keep its `loop_scope` set to `session`.
 
 Every PRD acceptance criterion must map to at least one test. Add the mapping when you add a feature.
 
