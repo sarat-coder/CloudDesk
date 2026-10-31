@@ -129,13 +129,13 @@ Update each row in place. Do not mark a row done from intention.
 
 | Surface | State on 2026-10-31 |
 |---|---|
-| Repository contents | P1-1 settings and logging are implemented locally on `feature/backend-config-logging`; they are not merged. P1-2 health routes and request-id middleware are not present in this checkout. Sample data and the rest of the backend are absent. `frontend/lib/types.ts` is still created in P12-2. |
-| Implemented | P1-1 implemented locally: cached settings, secret-safe settings dumps, and JSON logging with request/workflow context. The pytest harness, Makefile, `.env.example`, and P1-2 implementation are not present. |
-| Validated locally | `tests/unit/test_config.py` and `tests/unit/test_logging.py`: 8 passed on this machine. `make test` and `make demo` do not exist yet. This is not a Phase 1 exit. |
+| Repository contents | P1-1 settings and logging are merged into `development`. P1-2 health routes and request-id middleware are implemented locally on `feature/backend-health-request-id`, pending PR/merge. Sample data and the rest of the backend are absent. `frontend/lib/types.ts` is still created in P12-2. |
+| Implemented | P1-1 merged: cached settings, secret-safe settings dumps, and JSON logging with request/workflow context. P1-2 implemented locally: health, liveness, and readiness routes; readiness checks configuration only. Request IDs are validated/replaced, bound to log context, and returned on responses including 404, 500, and CORS preflight. |
+| Validated locally | `pytest -q`: 17 passed, including P1-1 and P1-2 tests. `make test` and `make demo` do not exist yet. This is not a Phase 1 exit. |
 | Cloud credentials | None used. |
 | Applied to a real account | Nothing. |
 | GitHub Actions | Workflow files are not in the repo. None have been executed. |
-| Phase plan | Phase 1 is in progress (P1-1 implemented locally, pending PR/merge; P1-2 through P1-4 are not present). Phases 2–13 are not started. |
+| Phase plan | Phase 1 is in progress (P1-1 merged; P1-2 implemented locally, pending PR/merge; P1-3 and P1-4 are not present). Phases 2–13 are not started. |
 
 ## Open questions from `CLAUDE.md` §20
 
