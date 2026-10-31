@@ -1,9 +1,8 @@
-from fastapi import FastAPI
-from fastapi.testclient import TestClient
-
 from app.core.config import Settings
 from app.main import create_app
 from app.middleware.request_id import RequestIdMiddleware
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
 
 
 def test_health_endpoint_reports_service_metadata():

@@ -440,6 +440,10 @@ make terraform-validate
 BASE_URL=http://localhost:8000 make smoke
 ```
 
+Make targets are added alongside the task that implements each feature. In Phase 1,
+`setup`, `backend`, `test`, and `lint` are available; seed, ingest, demo, MCP,
+Terraform validation, and smoke targets follow with their respective implementations.
+
 Windows: use `.venv/Scripts/python.exe`; `PYTHONPATH` must include `backend` (use `;` separator).
 Set `PYTHONIOENCODING=utf-8` for CLI output with symbols.
 

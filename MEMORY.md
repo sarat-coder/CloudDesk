@@ -129,13 +129,13 @@ Update each row in place. Do not mark a row done from intention.
 
 | Surface | State on 2026-10-31 |
 |---|---|
-| Repository contents | P1-1 and P1-2 are merged into `development`. P1-3 offline pytest harness is implemented locally on `feature/test-harness-offline`, pending PR/merge. Sample data and the rest of the backend are absent. `frontend/lib/types.ts` is still created in P12-2. |
-| Implemented | P1-1 cached settings and JSON logging; P1-2 health routes and request-ID middleware; P1-3 offline pytest environment, temporary SQLite URL, role header fixtures, and session-scoped asyncio configuration. P1-4 Makefile and `.env.example` are not present. |
-| Validated locally | `pytest -q`: 20 passed, including P1-1, P1-2, and P1-3 tests. The test environment uses the fake LLM/vector/Redis settings, memory checkpoint, and a temporary SQLite URL; no API credentials or Docker services are required. `make test` and `make demo` do not exist yet. This is not a Phase 1 exit. |
+| Repository contents | P1-1 through P1-3 are merged into `development`. P1-4 Makefile and `.env.example` are implemented locally on `feature/makefile-env-example`, pending PR/merge. Sample data and the rest of the backend are absent. `frontend/lib/types.ts` is still created in P12-2. |
+| Implemented | P1-1 cached settings and JSON logging; P1-2 health routes and request-ID middleware; P1-3 offline pytest environment, temporary SQLite URL, role header fixtures, and session-scoped asyncio configuration; P1-4 Phase 1 Make targets and complete placeholder-only `.env.example`. |
+| Validated locally | `uv run --group dev python -m pytest -q`: 22 passed. `uv run --group dev ruff check backend tests`: passed. GNU Make is not installed on this machine, so Makefile recipes were validated by running their equivalent `uv` commands directly. `make seed`, `make ingest`, `make demo`, `make mcp`, Terraform validation, and smoke targets follow with their implementations. This is not a Phase 1 exit. |
 | Cloud credentials | None used. |
 | Applied to a real account | Nothing. |
 | GitHub Actions | Workflow files are not in the repo. None have been executed. |
-| Phase plan | Phase 1 is in progress (P1-1 and P1-2 merged; P1-3 implemented locally, pending PR/merge; P1-4 is not present). Phases 2–13 are not started. |
+| Phase plan | Phase 1 is in progress (P1-1 through P1-3 merged; P1-4 implemented locally, pending PR/merge). Phases 2–13 are not started. |
 
 ## Open questions from `CLAUDE.md` §20
 

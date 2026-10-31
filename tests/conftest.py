@@ -8,10 +8,7 @@ from pathlib import Path
 
 import pytest
 
-
-_TEST_DATABASE_DIRECTORY = Path(
-    tempfile.mkdtemp(prefix="clouddesk-pytest-")
-)
+_TEST_DATABASE_DIRECTORY = Path(tempfile.mkdtemp(prefix="clouddesk-pytest-"))
 _TEST_DATABASE_PATH = _TEST_DATABASE_DIRECTORY / "support.db"
 
 os.environ.update(

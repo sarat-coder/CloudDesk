@@ -8,7 +8,6 @@ from typing import Annotated, Any
 from pydantic import Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
-
 _URL_PASSWORD = re.compile(r"(?<=//)([^/@]*):([^/@]*)@")
 
 
@@ -68,7 +67,9 @@ class Settings(BaseSettings):
             if stripped.startswith("["):
                 parsed = json.loads(stripped)
                 if not isinstance(parsed, list):
-                    raise ValueError("CORS_ORIGINS must be a list or comma-separated string")
+                    raise ValueError(
+                        "CORS_ORIGINS must be a list or comma-separated string"
+                    )
                 return [str(origin).strip() for origin in parsed if str(origin).strip()]
             return [origin.strip() for origin in stripped.split(",") if origin.strip()]
         if isinstance(value, list):

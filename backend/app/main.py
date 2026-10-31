@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from importlib.metadata import version
-from typing import AsyncIterator
 
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
@@ -30,10 +30,11 @@ def _readiness_checks(settings: Settings) -> dict[str, dict[str, str]]:
         vector_store_ok = False
         vector_store_detail = "Vector store provider is unsupported"
 
-    if settings.llm_provider == "fake":
-        llm_ok = True
-        llm_detail = ""
-    elif settings.llm_api_key and settings.llm_api_key.get_secret_value():
+    if (
+        settings.llm_provider == "fake"
+        or settings.llm_api_key
+        and settings.llm_api_key.get_secret_value()
+    ):
         llm_ok = True
         llm_detail = ""
     else:
@@ -43,7 +44,9 @@ def _readiness_checks(settings: Settings) -> dict[str, dict[str, str]]:
     results: dict[str, tuple[bool, str]] = {
         "database": (
             database_ok,
-            "" if database_ok else "Database URL is missing or uses an unsupported driver",
+            ""
+            if database_ok
+            else "Database URL is missing or uses an unsupported driver",
         ),
         "redis": (
             redis_ok,

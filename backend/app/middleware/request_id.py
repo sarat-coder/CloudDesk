@@ -7,7 +7,6 @@ from uuid import uuid4
 
 from app.core.logging import log_context
 
-
 _REQUEST_ID_HEADER = b"x-request-id"
 _REQUEST_ID_PATTERN = re.compile(r"[A-Za-z0-9._:-]{1,128}\Z")
 ASGIApp = Callable[..., Awaitable[None]]
