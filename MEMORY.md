@@ -129,13 +129,13 @@ Update each row in place. Do not mark a row done from intention.
 
 | Surface | State on 2026-10-31 |
 |---|---|
-| Repository contents | P1-1 settings and logging are merged into `development`. P1-2 health routes and request-id middleware are implemented locally on `feature/backend-health-request-id`, pending PR/merge. Sample data and the rest of the backend are absent. `frontend/lib/types.ts` is still created in P12-2. |
-| Implemented | P1-1 merged: cached settings, secret-safe settings dumps, and JSON logging with request/workflow context. P1-2 implemented locally: health, liveness, and readiness routes; readiness checks configuration only. Request IDs are validated/replaced, bound to log context, and returned on responses including 404, 500, and CORS preflight. |
-| Validated locally | `pytest -q`: 17 passed, including P1-1 and P1-2 tests. `make test` and `make demo` do not exist yet. This is not a Phase 1 exit. |
+| Repository contents | P1-1 and P1-2 are merged into `development`. P1-3 offline pytest harness is implemented locally on `feature/test-harness-offline`, pending PR/merge. Sample data and the rest of the backend are absent. `frontend/lib/types.ts` is still created in P12-2. |
+| Implemented | P1-1 cached settings and JSON logging; P1-2 health routes and request-ID middleware; P1-3 offline pytest environment, temporary SQLite URL, role header fixtures, and session-scoped asyncio configuration. P1-4 Makefile and `.env.example` are not present. |
+| Validated locally | `pytest -q`: 20 passed, including P1-1, P1-2, and P1-3 tests. The test environment uses the fake LLM/vector/Redis settings, memory checkpoint, and a temporary SQLite URL; no API credentials or Docker services are required. `make test` and `make demo` do not exist yet. This is not a Phase 1 exit. |
 | Cloud credentials | None used. |
 | Applied to a real account | Nothing. |
 | GitHub Actions | Workflow files are not in the repo. None have been executed. |
-| Phase plan | Phase 1 is in progress (P1-1 merged; P1-2 implemented locally, pending PR/merge; P1-3 and P1-4 are not present). Phases 2–13 are not started. |
+| Phase plan | Phase 1 is in progress (P1-1 and P1-2 merged; P1-3 implemented locally, pending PR/merge; P1-4 is not present). Phases 2–13 are not started. |
 
 ## Open questions from `CLAUDE.md` §20
 
