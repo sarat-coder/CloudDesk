@@ -3,11 +3,10 @@ from __future__ import annotations
 import json
 import logging
 import sys
+from collections.abc import Iterator
 from contextlib import contextmanager
 from contextvars import ContextVar, Token
-from datetime import datetime, timezone
-from typing import Iterator
-
+from datetime import UTC, datetime
 
 _request_id: ContextVar[str | None] = ContextVar("request_id", default=None)
 _workflow_id: ContextVar[str | None] = ContextVar("workflow_id", default=None)
@@ -17,7 +16,7 @@ _JSON_HANDLER_MARKER = "_clouddesk_json_handler"
 class JsonFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         entry: dict[str, object] = {
-            "timestamp": datetime.fromtimestamp(record.created, timezone.utc)
+            "timestamp": datetime.fromtimestamp(record.created, UTC)
             .isoformat(timespec="milliseconds")
             .replace("+00:00", "Z"),
             "level": record.levelname,

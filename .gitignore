@@ -27,3 +27,12 @@ ENV/
 .coverage
 .coverage.*
 htmlcov/
+
+# Local databases and runtime data
+data/
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+*.sqlite
+*.sqlite3
