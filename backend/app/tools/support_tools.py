@@ -170,7 +170,7 @@ async def search_docs(
     try:
         from rag.ingest import get_retriever
 
-        retriever = await get_retriever()
+        retriever = get_retriever()
         results = await retriever.retrieve(
             query=query,
             top_k=min(top_k, 10),

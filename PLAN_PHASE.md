@@ -18,7 +18,7 @@ Status values: `not started`, `in progress`, `implemented`, `validated locally`.
 | 10 | Approval and escalation | validated locally |
 | 11 | Memory | validated locally |
 | 12 | Agent console | validated locally |
-| 13 | Evaluation and delivery | not started |
+| 13 | Evaluation and delivery | validated locally |
 
 Course documents 00–17 are not in this repo. This plan is the §19 phase plan derived from `CLAUDE.md`. Stage 17 is optional and is not an exit criterion.
 

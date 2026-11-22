@@ -1,0 +1,69 @@
+name: Test
+
+on:
+  push:
+    branches: [main, development, testing, "phase*"]
+  pull_request:
+    branches: [main, development, testing]
+
+jobs:
+  backend-tests:
+    name: Backend — pytest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: pip install uv==0.5.11
+
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      - name: Run pytest
+        env:
+          DEMO_MODE: "true"
+          LLM_PROVIDER: fake
+          VECTOR_STORE: memory
+          USE_FAKE_REDIS: "true"
+          CHECKPOINT_DB_PATH: ":memory:"
+          JWT_SECRET: ci-test-secret
+          PYTHONIOENCODING: utf-8
+        run: uv run --group dev python -m pytest -q --tb=short
+
+      - name: Lint with Ruff
+        run: uv run --group dev ruff check backend tests agents rag memory
+
+  frontend-tests:
+    name: Frontend — lint, test, build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test -- --run
+
+      - name: Build
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:8000
+        run: npm run build

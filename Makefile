@@ -1,8 +1,11 @@
 UV ?= uv
 PORT ?= 8000
 TICKET ?= CD-1002
+BASE_URL ?= http://localhost:8000
+CLOUD ?= aws
+ENV ?= dev
 
-.PHONY: help setup backend seed ingest demo mcp test lint
+.PHONY: help setup backend seed ingest demo mcp test lint smoke terraform-validate
 
 help:
 	@echo "CloudDesk development commands:"
@@ -15,6 +18,8 @@ help:
 	@echo "  make mcp                Start the MCP server (read-only tools)"
 	@echo "  make test               Run the offline pytest suite"
 	@echo "  make lint               Run Ruff on backend and tests"
+	@echo "  make smoke              Run smoke tests against BASE_URL (default: $(BASE_URL))"
+	@echo "  make terraform-validate Validate all three Terraform roots (aws, azure, gcp)"
 
 setup:
 	$(UV) sync --group dev
@@ -40,3 +45,13 @@ test:
 
 lint:
 	$(UV) run --group dev ruff check backend tests agents rag memory
+
+smoke:
+	BASE_URL=$(BASE_URL) bash deployment/scripts/smoke_test.sh
+
+terraform-validate:
+	@for cloud in aws azure gcp; do \
+		echo "Validating $$cloud..."; \
+		cd deployment/$$cloud && terraform init -backend=false -input=false -no-color 2>/dev/null && terraform validate -no-color; \
+		cd -; \
+	done

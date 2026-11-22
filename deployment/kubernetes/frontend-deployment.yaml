@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clouddesk-frontend
+  namespace: clouddesk
+  labels:
+    app: clouddesk-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: clouddesk-frontend
+  template:
+    metadata:
+      labels:
+        app: clouddesk-frontend
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+      containers:
+        - name: frontend
+          image: FRONTEND_IMAGE_PLACEHOLDER  # replaced by CI with git SHA tag
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NEXT_PUBLIC_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: clouddesk-config
+                  key: api_url
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 20
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clouddesk-frontend
+  namespace: clouddesk
+spec:
+  selector:
+    app: clouddesk-frontend
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
