@@ -553,7 +553,7 @@ this file. Stage 17 is optional and is not a core exit criterion.
 | 2 | Persistence and demo data | completed ✅ |
 | 3 | Identity and request guards | completed ✅ |
 | 4 | Support API | completed ✅ |
-| 5 | Knowledge pipeline | not started |
+| 5 | Knowledge pipeline | completed ✅ |
 | 6 | Tools and policy | not started |
 | 7 | Rules and guardrails | not started |
 | 8 | Specialist agents | not started |

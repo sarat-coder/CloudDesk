@@ -9,9 +9,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.database import get_session
-from app.models.entities import Customer, Incident, Product, Subscription, Ticket, Workspace
+from app.models.entities import Customer, Incident, Product, Subscription, SupportArticle, Ticket, Workspace
 from app.repositories.ticket_repository import TicketRepository
 from app.repositories.customer_repository import CustomerRepository
+from app.repositories.knowledge_repository import KnowledgeRepository
 
 logger = logging.getLogger(__name__)
 
@@ -162,6 +163,33 @@ async def _seed_tickets(session: AsyncSession) -> None:
     logger.info("Tickets seeded (%d records)", len(records))
 
 
+async def _seed_articles(session: AsyncSession) -> None:
+    from pathlib import Path
+    from rag.chunking import load_article_files
+
+    settings = get_settings()
+    kb_dir = f"{settings.sample_data_dir}/knowledge_base"
+    if not Path(kb_dir).exists():
+        logger.warning("Knowledge base directory not found: %s", kb_dir)
+        return
+    articles = load_article_files(kb_dir)
+    repo = KnowledgeRepository(session)
+    seeded = 0
+    for art in articles:
+        article_id = str(uuid.uuid5(uuid.NAMESPACE_DNS, f"article:{art.slug}"))
+        await repo.upsert_from_file(
+            slug=art.slug,
+            title=art.title,
+            category=art.category,
+            tags=art.tags,
+            summary=art.summary,
+            body=art.body,
+            article_id=article_id,
+        )
+        seeded += 1
+    logger.info("Articles seeded (%d records)", seeded)
+
+
 async def bootstrap_demo_data() -> None:
     settings = get_settings()
     if not settings.demo_mode:
@@ -174,5 +202,6 @@ async def bootstrap_demo_data() -> None:
         await _seed_products(session)
         await _seed_incidents(session)
         await _seed_tickets(session)
+        await _seed_articles(session)
 
     logger.info("Demo data bootstrap complete")
