@@ -552,7 +552,7 @@ this file. Stage 17 is optional and is not a core exit criterion.
 | 1 | Runtime skeleton | completed ✅ |
 | 2 | Persistence and demo data | completed ✅ |
 | 3 | Identity and request guards | completed ✅ |
-| 4 | Support API | not started |
+| 4 | Support API | completed ✅ |
 | 5 | Knowledge pipeline | not started |
 | 6 | Tools and policy | not started |
 | 7 | Rules and guardrails | not started |

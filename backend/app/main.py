@@ -86,7 +86,18 @@ def create_app(settings: Settings | None = None) -> ASGIApp:
     )
 
     from app.api.auth import router as auth_router
+    from app.api.customers import router as customers_router
+    from app.api.dashboard import router as dashboard_router
+    from app.api.escalations import router as escalations_router
+    from app.api.settings import router as settings_router
+    from app.api.tickets import router as tickets_router
+
     api.include_router(auth_router)
+    api.include_router(tickets_router)
+    api.include_router(customers_router)
+    api.include_router(dashboard_router)
+    api.include_router(escalations_router)
+    api.include_router(settings_router)
 
     from app.core.security import require_role
 

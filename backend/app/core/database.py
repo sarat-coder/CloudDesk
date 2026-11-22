@@ -48,3 +48,15 @@ async def get_session() -> AsyncIterator[AsyncSession]:
         except Exception:
             await session.rollback()
             raise
+
+
+async def get_db() -> AsyncIterator[AsyncSession]:
+    """FastAPI dependency that yields an open AsyncSession."""
+    factory = _make_session_factory()
+    async with factory() as session:
+        try:
+            yield session
+            await session.commit()
+        except Exception:
+            await session.rollback()
+            raise
