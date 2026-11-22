@@ -50,16 +50,21 @@ def cleanup_test_database_directory() -> Iterator[None]:
     shutil.rmtree(_TEST_DATABASE_DIRECTORY, ignore_errors=True)
 
 
+def _make_token(sub: str, role: str, name: str) -> str:
+    from app.core.security import create_access_token
+    return create_access_token(sub=sub, role=role, name=name)
+
+
 @pytest.fixture
 def agent_headers() -> dict[str, str]:
-    return {"Authorization": "Bearer test-agent-token"}
+    return {"Authorization": f"Bearer {_make_token('demo-agent-001', 'agent', 'Sam Agent')}"}
 
 
 @pytest.fixture
 def admin_headers() -> dict[str, str]:
-    return {"Authorization": "Bearer test-admin-token"}
+    return {"Authorization": f"Bearer {_make_token('demo-admin-001', 'admin', 'Demo Admin')}"}
 
 
 @pytest.fixture
 def viewer_headers() -> dict[str, str]:
-    return {"Authorization": "Bearer test-viewer-token"}
+    return {"Authorization": f"Bearer {_make_token('demo-viewer-001', 'viewer', 'Vic Viewer')}"}
