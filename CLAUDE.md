@@ -554,11 +554,11 @@ this file. Stage 17 is optional and is not a core exit criterion.
 | 3 | Identity and request guards | completed ✅ |
 | 4 | Support API | completed ✅ |
 | 5 | Knowledge pipeline | completed ✅ |
-| 6 | Tools and policy | not started |
+| 6 | Tools and policy | completed ✅ |
 | 7 | Rules and guardrails | completed ✅ |
-| 8 | Specialist agents | not started |
-| 9 | Workflow graph and trace | not started |
-| 10 | Approval and escalation | not started |
+| 8 | Specialist agents | completed ✅ |
+| 9 | Workflow graph and trace | completed ✅ |
+| 10 | Approval and escalation | completed ✅ |
 | 11 | Memory | not started |
 | 12 | Agent console | not started |
 | 13 | Evaluation and delivery | not started |
