@@ -16,8 +16,8 @@ Status values: `not started`, `in progress`, `implemented`, `validated locally`.
 | 8 | Specialist agents | validated locally |
 | 9 | Workflow graph and trace | validated locally |
 | 10 | Approval and escalation | validated locally |
-| 11 | Memory | not started |
-| 12 | Agent console | not started |
+| 11 | Memory | validated locally |
+| 12 | Agent console | implemented |
 | 13 | Evaluation and delivery | not started |
 
 Course documents 00–17 are not in this repo. This plan is the §19 phase plan derived from `CLAUDE.md`. Stage 17 is optional and is not an exit criterion.
