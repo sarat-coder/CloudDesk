@@ -1,13 +1,14 @@
 UV ?= uv
 PORT ?= 8000
 
-.PHONY: help setup backend seed test lint
+.PHONY: help setup backend seed ingest test lint
 
 help:
 	@echo "CloudDesk development commands:"
 	@echo "  make setup   Sync dependencies and create .env from .env.example if absent"
 	@echo "  make backend Run the FastAPI development server on port $(PORT)"
 	@echo "  make seed    Load sample data into the local SQLite database"
+	@echo "  make ingest  Chunk and index the knowledge base articles"
 	@echo "  make test    Run the offline pytest suite"
 	@echo "  make lint    Run Ruff on backend and tests"
 
@@ -20,6 +21,9 @@ backend:
 
 seed:
 	PYTHONPATH=backend $(UV) run --group dev python -c "import asyncio; from app.core.database import create_tables; from app.services.seed_service import bootstrap_demo_data; asyncio.run(create_tables()); asyncio.run(bootstrap_demo_data())"
+
+ingest:
+	PYTHONPATH="backend:." $(UV) run --group dev python -c "import asyncio; from app.core.config import get_settings; from rag.ingest import run_ingest, build_fresh_retriever; s=get_settings(); n=asyncio.run(run_ingest(s, force=True)); print(f'Indexed {n} chunks from knowledge base')"
 
 test:
 	$(UV) run --group dev python -m pytest -q

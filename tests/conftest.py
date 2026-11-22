@@ -2,11 +2,17 @@ from __future__ import annotations
 
 import os
 import shutil
+import sys
 import tempfile
 from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
+
+# Ensure the project root (containing rag/, agents/, etc.) is importable
+_PROJECT_ROOT = str(Path(__file__).resolve().parent.parent)
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
 
 _TEST_DATABASE_DIRECTORY = Path(tempfile.mkdtemp(prefix="clouddesk-pytest-"))
 _TEST_DATABASE_PATH = _TEST_DATABASE_DIRECTORY / "support.db"

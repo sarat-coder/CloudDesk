@@ -77,6 +77,12 @@ def create_app(settings: Settings | None = None) -> ASGIApp:
         if app_settings.demo_mode:
             from app.services.seed_service import bootstrap_demo_data
             await bootstrap_demo_data()
+        try:
+            from rag.ingest import run_ingest
+            await run_ingest(app_settings)
+        except Exception as exc:  # pragma: no cover — only fails if kb dir is missing
+            import logging
+            logging.getLogger(__name__).warning("Knowledge ingest skipped: %s", exc)
         yield
 
     api = FastAPI(
@@ -89,6 +95,7 @@ def create_app(settings: Settings | None = None) -> ASGIApp:
     from app.api.customers import router as customers_router
     from app.api.dashboard import router as dashboard_router
     from app.api.escalations import router as escalations_router
+    from app.api.knowledge import router as knowledge_router
     from app.api.settings import router as settings_router
     from app.api.tickets import router as tickets_router
 
@@ -97,6 +104,7 @@ def create_app(settings: Settings | None = None) -> ASGIApp:
     api.include_router(customers_router)
     api.include_router(dashboard_router)
     api.include_router(escalations_router)
+    api.include_router(knowledge_router)
     api.include_router(settings_router)
 
     from app.core.security import require_role
