@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clouddesk-backend
+  namespace: clouddesk
+  labels:
+    app: clouddesk-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: clouddesk-backend
+  template:
+    metadata:
+      labels:
+        app: clouddesk-backend
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        fsGroup: 1001
+      containers:
+        - name: backend
+          image: BACKEND_IMAGE_PLACEHOLDER  # replaced by CI with git SHA tag
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: clouddesk-secrets
+          env:
+            - name: DEMO_MODE
+              value: "false"
+            - name: VECTOR_STORE
+              value: qdrant
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clouddesk-backend
+  namespace: clouddesk
+spec:
+  selector:
+    app: clouddesk-backend
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000

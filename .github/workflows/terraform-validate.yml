@@ -1,0 +1,33 @@
+name: Terraform Validate
+
+on:
+  push:
+    paths:
+      - "deployment/**"
+    branches: [main, development]
+  pull_request:
+    paths:
+      - "deployment/**"
+
+jobs:
+  validate:
+    name: Validate Terraform configurations
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cloud: [aws, azure, gcp]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.0"
+
+      - name: Terraform init (no backend)
+        working-directory: deployment/${{ matrix.cloud }}
+        run: terraform init -backend=false
+
+      - name: Terraform validate
+        working-directory: deployment/${{ matrix.cloud }}
+        run: terraform validate

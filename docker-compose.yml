@@ -1,0 +1,114 @@
+version: "3.9"
+
+# CloudDesk — full local stack
+# Start: docker compose up --build
+# Stop:  docker compose down
+#
+# Services (dependency order):  redis → qdrant → backend → frontend
+# Named volumes persist data across restarts; remove with: docker compose down -v
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # Redis — short-term memory, rate limiting, retrieval cache
+  # ---------------------------------------------------------------------------
+  redis:
+    image: redis:7.4-alpine
+    restart: unless-stopped
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - clouddesk
+
+  # ---------------------------------------------------------------------------
+  # Qdrant — vector store for knowledge base
+  # ---------------------------------------------------------------------------
+  qdrant:
+    image: qdrant/qdrant:v1.12.1
+    restart: unless-stopped
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:6333/healthz || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - clouddesk
+
+  # ---------------------------------------------------------------------------
+  # Backend — FastAPI + LangGraph
+  # ---------------------------------------------------------------------------
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: sqlite+aiosqlite:////app/data/support.db
+      CHECKPOINT_DB_PATH: /app/data/checkpoints.db
+      REDIS_URL: redis://redis:6379/0
+      USE_FAKE_REDIS: "false"
+      VECTOR_STORE: qdrant
+      QDRANT_URL: http://qdrant:6333
+      CORS_ORIGINS: "http://localhost:3000,http://frontend:3000"
+    volumes:
+      - backend_data:/app/data
+    depends_on:
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health/live')\""]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    ports:
+      - "8000:8000"
+    networks:
+      - clouddesk
+
+  # ---------------------------------------------------------------------------
+  # Frontend — Next.js standalone
+  # ---------------------------------------------------------------------------
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: http://backend:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/api/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    ports:
+      - "3000:3000"
+    networks:
+      - clouddesk
+
+networks:
+  clouddesk:
+    driver: bridge
+
+volumes:
+  redis_data:
+  qdrant_data:
+  backend_data:
