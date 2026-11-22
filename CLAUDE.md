@@ -561,7 +561,8 @@ this file. Stage 17 is optional and is not a core exit criterion.
 | 10 | Approval and escalation | completed ✅ |
 | 11 | Memory | completed ✅ |
 | 12 | Agent console | completed ✅ |
-| 13 | Evaluation and delivery | not started |
+| 13 | Ticket workflow screen | completed ✅ |
+| 14 | Evaluation and delivery | not started |
 
 ---
 

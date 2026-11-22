@@ -147,6 +147,22 @@ const STEP_LABELS: Record<string, string> = {
   memory_update: "Update memory",
 };
 
+// Pure helpers — easily unit-tested without rendering a full page
+export function shouldShowApproveReject(
+  approvalStatus: string | null | undefined,
+  canAct: boolean
+): boolean {
+  return canAct && approvalStatus === "pending";
+}
+
+export function shouldShowEscalate(
+  ticketStatus: string | null | undefined,
+  canAct: boolean
+): boolean {
+  if (!canAct || !ticketStatus) return false;
+  return ticketStatus !== "escalated" && ticketStatus !== "closed";
+}
+
 export function deriveSteps(
   workflow: import("./types").WorkflowState | null
 ): WorkflowStep[] {

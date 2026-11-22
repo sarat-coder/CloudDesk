@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Card } from "@/components/ui/Card";
 import { formatDate, categoryLabel, formatDuration } from "@/lib/format";
-import { useAuth, useWorkflowPolling, deriveSteps } from "@/lib/hooks";
+import { useAuth, useWorkflowPolling, deriveSteps, shouldShowApproveReject, shouldShowEscalate } from "@/lib/hooks";
 import type { TicketDetail, WorkflowStep } from "@/lib/hooks";
 import type { TicketDetail as TD } from "@/lib/types";
 
@@ -60,6 +60,9 @@ export default function TicketDetailPage() {
   const [runLoading, setRunLoading] = useState(false);
   const [replyLoading, setReplyLoading] = useState(false);
   const [approveLoading, setApproveLoading] = useState(false);
+  const [escalateLoading, setEscalateLoading] = useState(false);
+  const [escalateReason, setEscalateReason] = useState("");
+  const [showEscalateForm, setShowEscalateForm] = useState(false);
   const [actionMsg, setActionMsg] = useState<string | null>(null);
 
   const loadTicket = useCallback(() => {
@@ -129,10 +132,27 @@ export default function TicketDetailPage() {
     }
   }
 
+  async function handleEscalate() {
+    if (!escalateReason.trim()) return;
+    setEscalateLoading(true);
+    try {
+      await tickets.escalate(id, escalateReason.trim());
+      setActionMsg("Ticket escalated to a specialist team.");
+      setShowEscalateForm(false);
+      setEscalateReason("");
+      loadTicket();
+    } catch (e) {
+      setActionMsg(e instanceof Error ? e.message : "Escalation failed");
+    } finally {
+      setEscalateLoading(false);
+    }
+  }
+
   if (error) return <div className="p-6 text-sm text-red-600">{error}</div>;
   if (!ticket) return <div className="p-6 text-sm text-[var(--fg-muted)]">Loading…</div>;
 
-  const showApproveReject = workflow?.approval_status === "pending" && canAct;
+  const showApproveReject = shouldShowApproveReject(workflow?.approval_status, canAct);
+  const showEscalateBtn = shouldShowEscalate(ticket?.status, canAct);
 
   return (
     <div className="h-full grid grid-cols-[1fr_280px_320px] gap-0 divide-x divide-[var(--border)]">
@@ -206,7 +226,26 @@ export default function TicketDetailPage() {
                   <Button size="sm" variant="danger" onClick={handleReject} disabled={approveLoading}>Reject</Button>
                 </>
               )}
+              {showEscalateBtn && !showApproveReject && (
+                <Button size="sm" variant="secondary" onClick={() => setShowEscalateForm((v) => !v)}>
+                  Escalate
+                </Button>
+              )}
             </div>
+            {showEscalateForm && (
+              <div className="mt-2 flex gap-2 items-start">
+                <textarea
+                  value={escalateReason}
+                  onChange={(e) => setEscalateReason(e.target.value)}
+                  placeholder="Reason for escalation…"
+                  rows={2}
+                  className="flex-1 px-3 py-2 text-sm border border-[var(--border)] rounded-md bg-[var(--bg)] text-[var(--fg)] placeholder:text-[var(--fg-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--brand)] resize-none"
+                />
+                <Button size="sm" variant="danger" onClick={handleEscalate} disabled={escalateLoading || !escalateReason.trim()}>
+                  {escalateLoading ? "Escalating…" : "Confirm escalate"}
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>
