@@ -47,7 +47,7 @@ os.environ.update(
 @pytest.fixture(scope="session", autouse=True)
 def cleanup_test_database_directory() -> Iterator[None]:
     yield
-    shutil.rmtree(_TEST_DATABASE_DIRECTORY)
+    shutil.rmtree(_TEST_DATABASE_DIRECTORY, ignore_errors=True)
 
 
 @pytest.fixture

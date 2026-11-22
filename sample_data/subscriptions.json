@@ -1,0 +1,98 @@
+[
+  {
+    "id": "sub-0001",
+    "customer_id": "cust-0001",
+    "plan": "enterprise",
+    "seats": 150,
+    "seats_used": 143,
+    "status": "active",
+    "billing_cycle": "annual",
+    "amount": 24000.00,
+    "currency": "USD",
+    "renewal_date": "2025-04-01"
+  },
+  {
+    "id": "sub-0002",
+    "customer_id": "cust-0002",
+    "plan": "pro",
+    "seats": 8,
+    "seats_used": 5,
+    "status": "active",
+    "billing_cycle": "monthly",
+    "amount": 120.00,
+    "currency": "USD",
+    "renewal_date": "2024-02-15"
+  },
+  {
+    "id": "sub-0003",
+    "customer_id": "cust-0003",
+    "plan": "free",
+    "seats": 3,
+    "seats_used": 1,
+    "status": "active",
+    "billing_cycle": "monthly",
+    "amount": 0.00,
+    "currency": "USD",
+    "renewal_date": null
+  },
+  {
+    "id": "sub-0004",
+    "customer_id": "cust-0004",
+    "plan": "business",
+    "seats": 40,
+    "seats_used": 32,
+    "status": "active",
+    "billing_cycle": "annual",
+    "amount": 4800.00,
+    "currency": "USD",
+    "renewal_date": "2025-01-10"
+  },
+  {
+    "id": "sub-0005",
+    "customer_id": "cust-0005",
+    "plan": "pro",
+    "seats": 5,
+    "seats_used": 4,
+    "status": "active",
+    "billing_cycle": "monthly",
+    "amount": 75.00,
+    "currency": "USD",
+    "renewal_date": "2024-02-20"
+  },
+  {
+    "id": "sub-0006",
+    "customer_id": "cust-0006",
+    "plan": "business",
+    "seats": 20,
+    "seats_used": 18,
+    "status": "active",
+    "billing_cycle": "monthly",
+    "amount": 600.00,
+    "currency": "USD",
+    "renewal_date": "2024-02-28"
+  },
+  {
+    "id": "sub-0007",
+    "customer_id": "cust-0007",
+    "plan": "enterprise",
+    "seats": 300,
+    "seats_used": 287,
+    "status": "active",
+    "billing_cycle": "annual",
+    "amount": 48000.00,
+    "currency": "USD",
+    "renewal_date": "2025-06-01"
+  },
+  {
+    "id": "sub-0008",
+    "customer_id": "cust-0008",
+    "plan": "free",
+    "seats": 3,
+    "seats_used": 1,
+    "status": "active",
+    "billing_cycle": "monthly",
+    "amount": 0.00,
+    "currency": "USD",
+    "renewal_date": null
+  }
+]

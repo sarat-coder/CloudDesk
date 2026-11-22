@@ -1,0 +1,74 @@
+[
+  {
+    "id": "cust-0001",
+    "external_id": "CUST-0001",
+    "name": "Priya Sharma",
+    "email": "priya.sharma@acmecorp.example",
+    "company": "Acme Corp",
+    "plan": "enterprise",
+    "status": "active"
+  },
+  {
+    "id": "cust-0002",
+    "external_id": "CUST-0002",
+    "name": "James Wu",
+    "email": "james.wu@startupxyz.example",
+    "company": "StartupXYZ",
+    "plan": "pro",
+    "status": "active"
+  },
+  {
+    "id": "cust-0003",
+    "external_id": "CUST-0003",
+    "name": "Maria Costa",
+    "email": "maria.costa@freelance.example",
+    "company": null,
+    "plan": "free",
+    "status": "active"
+  },
+  {
+    "id": "cust-0004",
+    "external_id": "CUST-0004",
+    "name": "David Okonkwo",
+    "email": "david.o@techco.example",
+    "company": "TechCo Ltd",
+    "plan": "business",
+    "status": "active"
+  },
+  {
+    "id": "cust-0005",
+    "external_id": "CUST-0005",
+    "name": "Sarah Kim",
+    "email": "sarah.kim@designstudio.example",
+    "company": "Design Studio",
+    "plan": "pro",
+    "status": "active"
+  },
+  {
+    "id": "cust-0006",
+    "external_id": "CUST-0006",
+    "name": "Alex Rivera",
+    "email": "alex.r@consulting.example",
+    "company": "Rivera Consulting",
+    "plan": "business",
+    "status": "active"
+  },
+  {
+    "id": "cust-0007",
+    "external_id": "CUST-0007",
+    "name": "Yuki Tanaka",
+    "email": "yuki.t@globalbank.example",
+    "company": "Global Bank",
+    "plan": "enterprise",
+    "status": "active"
+  },
+  {
+    "id": "cust-0008",
+    "external_id": "CUST-0008",
+    "name": "Emma Patel",
+    "email": "emma.patel@solodev.example",
+    "company": null,
+    "plan": "free",
+    "status": "active"
+  }
+]

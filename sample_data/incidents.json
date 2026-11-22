@@ -1,0 +1,22 @@
+[
+  {
+    "id": "inc-0001",
+    "title": "SSO Authentication Service Degradation",
+    "description": "The SSO authentication service is experiencing elevated error rates affecting enterprise customers using SAML-based login. Engineering is investigating.",
+    "affected_services": ["sso", "authentication"],
+    "status": "investigating",
+    "severity": "critical",
+    "started_at": "2024-01-15T08:30:00Z",
+    "resolved_at": null
+  },
+  {
+    "id": "inc-0002",
+    "title": "API Rate Limiting Service Outage",
+    "description": "The API rate limiting service experienced a brief outage causing some requests to receive 429 errors even when under their quota. The issue has been resolved.",
+    "affected_services": ["api", "rate-limiting"],
+    "status": "resolved",
+    "severity": "medium",
+    "started_at": "2024-01-10T14:00:00Z",
+    "resolved_at": "2024-01-10T16:45:00Z"
+  }
+]
