@@ -12,7 +12,7 @@ Status values: `not started`, `in progress`, `implemented`, `validated locally`.
 | 4 | Support API | validated locally |
 | 5 | Knowledge pipeline | validated locally |
 | 6 | Tools and policy | validated locally |
-| 7 | Rules and guardrails | not started |
+| 7 | Rules and guardrails | validated locally |
 | 8 | Specialist agents | not started |
 | 9 | Workflow graph and trace | not started |
 | 10 | Approval and escalation | not started |

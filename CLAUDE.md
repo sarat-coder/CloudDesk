@@ -555,7 +555,7 @@ this file. Stage 17 is optional and is not a core exit criterion.
 | 4 | Support API | completed ✅ |
 | 5 | Knowledge pipeline | completed ✅ |
 | 6 | Tools and policy | not started |
-| 7 | Rules and guardrails | not started |
+| 7 | Rules and guardrails | completed ✅ |
 | 8 | Specialist agents | not started |
 | 9 | Workflow graph and trace | not started |
 | 10 | Approval and escalation | not started |
