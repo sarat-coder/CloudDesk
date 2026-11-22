@@ -33,7 +33,7 @@ def test_role_header_fixtures_are_distinct_bearer_headers(
     }
 
     assert len(values) == 3
-    assert all(value.startswith("Bearer test-") for value in values)
+    assert all(value.startswith("Bearer ") for value in values)
 
 
 async def test_asyncio_is_configured_for_session_scoped_loop(

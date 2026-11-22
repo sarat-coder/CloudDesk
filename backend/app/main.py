@@ -4,13 +4,15 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from importlib.metadata import version
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 from starlette.types import ASGIApp
 
 from app.core.config import Settings, get_settings
 from app.core.logging import setup_logging
+from app.middleware.audit import AuditMiddleware
+from app.middleware.rate_limit import RateLimitMiddleware
 from app.middleware.request_id import RequestIdMiddleware
 
 
@@ -83,6 +85,15 @@ def create_app(settings: Settings | None = None) -> ASGIApp:
         lifespan=lifespan,
     )
 
+    from app.api.auth import router as auth_router
+    api.include_router(auth_router)
+
+    from app.core.security import require_role
+
+    @api.post("/api/v1/_test/agent-only")
+    async def _test_agent_only(user: dict = Depends(require_role("agent"))) -> dict:
+        return {"ok": True, "role": user["role"]}
+
     @api.get("/health")
     async def health() -> dict[str, str]:
         return {
@@ -117,7 +128,9 @@ def create_app(settings: Settings | None = None) -> ASGIApp:
         allow_headers=["*"],
         expose_headers=["X-Request-ID"],
     )
-    return RequestIdMiddleware(cors_app)
+    request_id_app = RequestIdMiddleware(cors_app)
+    rate_limit_app = RateLimitMiddleware(request_id_app)
+    return AuditMiddleware(rate_limit_app)
 
 
 app = create_app()
