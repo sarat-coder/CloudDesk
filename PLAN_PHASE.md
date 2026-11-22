@@ -13,9 +13,9 @@ Status values: `not started`, `in progress`, `implemented`, `validated locally`.
 | 5 | Knowledge pipeline | validated locally |
 | 6 | Tools and policy | validated locally |
 | 7 | Rules and guardrails | validated locally |
-| 8 | Specialist agents | not started |
-| 9 | Workflow graph and trace | not started |
-| 10 | Approval and escalation | not started |
+| 8 | Specialist agents | validated locally |
+| 9 | Workflow graph and trace | validated locally |
+| 10 | Approval and escalation | validated locally |
 | 11 | Memory | not started |
 | 12 | Agent console | not started |
 | 13 | Evaluation and delivery | not started |

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -17,7 +17,7 @@ from app.schemas.tickets import (
     TicketSummaryResponse,
     TicketUpdate,
 )
-from app.services import ticket_service
+from app.services import ticket_service, workflow_service
 
 router = APIRouter(prefix="/api/v1/tickets", tags=["tickets"])
 
@@ -165,19 +165,49 @@ async def request_info(
 @router.post("/{ticket_id}/run", status_code=status.HTTP_202_ACCEPTED)
 async def run_workflow(
     ticket_id: str,
+    background_tasks: BackgroundTasks,
     user: dict = Depends(require_role("agent")),
     db: AsyncSession = Depends(get_db),
 ):
-    """Start the LangGraph workflow for this ticket (Phase 10)."""
+    """Start the LangGraph workflow for this ticket."""
     ticket = await ticket_service.get_ticket(db, ticket_id)
     if ticket is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Ticket not found")
+
+    # 409 when already waiting_on_approval
     if ticket.status == "waiting_on_approval":
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Ticket is already waiting on approval",
         )
-    return {"workflow_id": None, "status": "not_implemented_until_phase_10"}
+
+    # 409 when there is already an active run
+    active_run = await workflow_service.get_active_run(db, ticket_id)
+    if active_run is not None and active_run.status == "running":
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="A workflow is already running for this ticket",
+        )
+
+    # Create the run row synchronously, return 202 immediately
+    run = await workflow_service.create_run(
+        db,
+        ticket_id=ticket_id,
+        started_by=user.get("sub"),
+    )
+
+    # Launch the graph in the background
+    background_tasks.add_task(
+        workflow_service.start_workflow,
+        ticket_id=ticket_id,
+        subject=ticket.subject,
+        body=ticket.body,
+        channel=ticket.channel,
+        customer_id=ticket.customer_id,
+        workflow_id=run.id,
+    )
+
+    return {"workflow_id": run.id, "status": "running"}
 
 
 @router.get("/{ticket_id}/workflow")
@@ -186,11 +216,42 @@ async def get_workflow(
     _user: dict = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Return the latest workflow state (Phase 9)."""
+    """Return the latest workflow state for the ticket."""
     ticket = await ticket_service.get_ticket(db, ticket_id)
     if ticket is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Ticket not found")
-    return {"workflow": None}
+
+    run = await workflow_service.get_latest_run(db, ticket_id)
+    if run is None:
+        return {"workflow": None}
+
+    state = run.state or {}
+    return {
+        "workflow_id": run.id,
+        "ticket_id": ticket_id,
+        "status": run.status,
+        "started_at": run.started_at.isoformat() if run.started_at else None,
+        "completed_at": run.completed_at.isoformat() if run.completed_at else None,
+        "current_node": state.get("current_node"),
+        "completed_nodes": state.get("completed_nodes", []),
+        "classification": state.get("classification"),
+        "severity": state.get("severity"),
+        "severity_reason": state.get("severity_reason"),
+        "customer_context": state.get("customer_context"),
+        "evidence": state.get("evidence", []),
+        "previous_cases": state.get("previous_cases", []),
+        "diagnosis": state.get("diagnosis"),
+        "resolution_plan": state.get("resolution_plan"),
+        "planned_actions": [
+            a if isinstance(a, dict) else a.model_dump()
+            for a in state.get("planned_actions", [])
+        ],
+        "escalation_decision": state.get("escalation_decision"),
+        "risk_level": state.get("risk_level", "low"),
+        "ticket_summary": state.get("ticket_summary"),
+        "errors": state.get("errors", []),
+        "token_usage": state.get("token_usage", {}),
+    }
 
 
 @router.get("/{ticket_id}/events")
@@ -199,8 +260,24 @@ async def get_events(
     _user: dict = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Return workflow events for this ticket (Phase 9)."""
+    """Return workflow events for this ticket (all runs, most recent run first)."""
     ticket = await ticket_service.get_ticket(db, ticket_id)
     if ticket is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Ticket not found")
-    return []
+
+    run = await workflow_service.get_latest_run(db, ticket_id)
+    if run is None:
+        return []
+
+    events = await workflow_service.get_run_events(db, run.id)
+    return [
+        {
+            "id": e.id,
+            "run_id": e.run_id,
+            "event_type": e.event_type,
+            "node": e.node,
+            "data": e.data,
+            "created_at": e.created_at.isoformat() if e.created_at else None,
+        }
+        for e in events
+    ]

@@ -91,6 +91,7 @@ def create_app(settings: Settings | None = None) -> ASGIApp:
         lifespan=lifespan,
     )
 
+    from app.api.approvals import router as approvals_router
     from app.api.auth import router as auth_router
     from app.api.customers import router as customers_router
     from app.api.dashboard import router as dashboard_router
@@ -101,6 +102,7 @@ def create_app(settings: Settings | None = None) -> ASGIApp:
 
     api.include_router(auth_router)
     api.include_router(tickets_router)
+    api.include_router(approvals_router)
     api.include_router(customers_router)
     api.include_router(dashboard_router)
     api.include_router(escalations_router)
