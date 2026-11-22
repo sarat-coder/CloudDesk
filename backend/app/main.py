@@ -70,6 +70,11 @@ def create_app(settings: Settings | None = None) -> ASGIApp:
     @asynccontextmanager
     async def lifespan(_: FastAPI) -> AsyncIterator[None]:
         setup_logging()
+        from app.core.database import create_tables
+        await create_tables()
+        if app_settings.demo_mode:
+            from app.services.seed_service import bootstrap_demo_data
+            await bootstrap_demo_data()
         yield
 
     api = FastAPI(

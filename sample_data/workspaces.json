@@ -1,0 +1,101 @@
+[
+  {
+    "id": "ws-0001",
+    "customer_id": "cust-0001",
+    "name": "Acme Corp Main",
+    "slug": "acme-corp-main",
+    "region": "us-east-1",
+    "storage_used_gb": 843.5,
+    "storage_limit_gb": 2000.0,
+    "member_count": 143,
+    "settings": {"sso_enabled": true, "external_sharing": true}
+  },
+  {
+    "id": "ws-0002",
+    "customer_id": "cust-0002",
+    "name": "StartupXYZ Workspace",
+    "slug": "startupxyz",
+    "region": "us-west-2",
+    "storage_used_gb": 48.2,
+    "storage_limit_gb": 100.0,
+    "member_count": 5,
+    "settings": {"sso_enabled": false, "external_sharing": true}
+  },
+  {
+    "id": "ws-0003",
+    "customer_id": "cust-0003",
+    "name": "Maria's Workspace",
+    "slug": "maria-freelance",
+    "region": "eu-west-1",
+    "storage_used_gb": 4.9,
+    "storage_limit_gb": 5.0,
+    "member_count": 1,
+    "settings": {"sso_enabled": false, "external_sharing": false}
+  },
+  {
+    "id": "ws-0004",
+    "customer_id": "cust-0004",
+    "name": "TechCo Production",
+    "slug": "techco-prod",
+    "region": "us-east-1",
+    "storage_used_gb": 215.0,
+    "storage_limit_gb": 500.0,
+    "member_count": 32,
+    "settings": {"sso_enabled": true, "external_sharing": true}
+  },
+  {
+    "id": "ws-0005",
+    "customer_id": "cust-0005",
+    "name": "Design Studio Hub",
+    "slug": "design-studio-hub",
+    "region": "eu-central-1",
+    "storage_used_gb": 62.4,
+    "storage_limit_gb": 100.0,
+    "member_count": 4,
+    "settings": {"sso_enabled": false, "external_sharing": true}
+  },
+  {
+    "id": "ws-0006",
+    "customer_id": "cust-0006",
+    "name": "Rivera Consulting",
+    "slug": "rivera-consulting",
+    "region": "us-west-2",
+    "storage_used_gb": 123.7,
+    "storage_limit_gb": 500.0,
+    "member_count": 18,
+    "settings": {"sso_enabled": false, "external_sharing": true}
+  },
+  {
+    "id": "ws-0007",
+    "customer_id": "cust-0007",
+    "name": "Global Bank Primary",
+    "slug": "global-bank-primary",
+    "region": "eu-west-1",
+    "storage_used_gb": 1340.0,
+    "storage_limit_gb": 2000.0,
+    "member_count": 287,
+    "settings": {"sso_enabled": true, "external_sharing": false}
+  },
+  {
+    "id": "ws-0008",
+    "customer_id": "cust-0007",
+    "name": "Global Bank Legacy",
+    "slug": "global-bank-legacy",
+    "region": "eu-west-1",
+    "storage_used_gb": 980.0,
+    "storage_limit_gb": 2000.0,
+    "member_count": 112,
+    "settings": {"sso_enabled": true, "external_sharing": false}
+  },
+  {
+    "id": "ws-0009",
+    "customer_id": "cust-0008",
+    "name": "Emma's Personal",
+    "slug": "emma-personal",
+    "region": "us-east-1",
+    "storage_used_gb": 1.2,
+    "storage_limit_gb": 5.0,
+    "member_count": 1,
+    "settings": {"sso_enabled": false, "external_sharing": false}
+  }
+]

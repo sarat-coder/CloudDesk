@@ -1,0 +1,58 @@
+[
+  {
+    "id": "prod-0001",
+    "name": "CloudDesk Free",
+    "slug": "clouddesk-free",
+    "description": "Free tier for individuals and very small teams.",
+    "plan_limits": {
+      "storage_gb": 5,
+      "seats": 3,
+      "api_calls_per_day": 1000,
+      "external_sharing": false,
+      "sso": false,
+      "support": "community"
+    }
+  },
+  {
+    "id": "prod-0002",
+    "name": "CloudDesk Pro",
+    "slug": "clouddesk-pro",
+    "description": "Professional tier for growing teams with collaboration needs.",
+    "plan_limits": {
+      "storage_gb": 100,
+      "seats": 25,
+      "api_calls_per_day": 50000,
+      "external_sharing": true,
+      "sso": false,
+      "support": "email"
+    }
+  },
+  {
+    "id": "prod-0003",
+    "name": "CloudDesk Business",
+    "slug": "clouddesk-business",
+    "description": "Business tier with advanced admin controls and priority support.",
+    "plan_limits": {
+      "storage_gb": 500,
+      "seats": 100,
+      "api_calls_per_day": 250000,
+      "external_sharing": true,
+      "sso": true,
+      "support": "priority"
+    }
+  },
+  {
+    "id": "prod-0004",
+    "name": "CloudDesk Enterprise",
+    "slug": "clouddesk-enterprise",
+    "description": "Enterprise tier with unlimited seats, SSO, SLA, and dedicated support.",
+    "plan_limits": {
+      "storage_gb": 2000,
+      "seats": -1,
+      "api_calls_per_day": -1,
+      "external_sharing": true,
+      "sso": true,
+      "support": "dedicated"
+    }
+  }
+]

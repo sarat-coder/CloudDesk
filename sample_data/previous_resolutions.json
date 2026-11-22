@@ -1,0 +1,46 @@
+[
+  {
+    "id": "res-hist-001",
+    "ticket_number": "CD-0892",
+    "category": "login_issue",
+    "subject": "SSO login failing for new employees",
+    "resolution_summary": "Customer's SSO provider certificate had expired. Guided admin through certificate renewal and IdP metadata refresh in CloudDesk settings. Issue resolved after re-testing SSO flow.",
+    "steps_taken": [
+      "Verified SSO configuration in workspace settings",
+      "Confirmed IdP certificate expiry date",
+      "Provided step-by-step certificate renewal guide",
+      "Re-uploaded IdP metadata XML",
+      "Confirmed successful SSO login for all affected users"
+    ],
+    "outcome": "resolved"
+  },
+  {
+    "id": "res-hist-002",
+    "ticket_number": "CD-0945",
+    "category": "billing",
+    "subject": "Charged for unused seats after downgrade",
+    "resolution_summary": "Customer downgraded plan mid-cycle but was charged for the full month at the higher tier. Issued prorated refund for the unused seats.",
+    "steps_taken": [
+      "Reviewed billing history and confirmed overpayment",
+      "Calculated prorated refund amount",
+      "Processed refund via billing system",
+      "Sent confirmation email with refund details"
+    ],
+    "outcome": "resolved"
+  },
+  {
+    "id": "res-hist-003",
+    "ticket_number": "CD-0978",
+    "category": "api_failure",
+    "subject": "API returning 429 on batch operations",
+    "resolution_summary": "Customer was using a synchronous batch strategy that issued 50+ API calls per second, exceeding the burst limit. Recommended async queue-based approach with exponential backoff.",
+    "steps_taken": [
+      "Reviewed customer's API usage logs",
+      "Identified burst pattern exceeding rate limit",
+      "Shared rate limit documentation and best practices",
+      "Provided sample code for exponential backoff",
+      "Confirmed customer implemented fix"
+    ],
+    "outcome": "resolved"
+  }
+]
